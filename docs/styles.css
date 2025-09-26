@@ -1,0 +1,1194 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', sans-serif;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  min-width: 100%;
+  z-index: -3;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("/assets/img_futurista_pc.png"); /* padrão desktop */
+
+}
+
+@media (max-width: 600px) {
+  .background-image {
+     background-image: url("/assets/Img_furista_cell.png");/* Para celular */
+     height: 90dvh;
+     width: 80%;
+
+  }
+}
+
+.background {
+    height: 100dvh;
+    width: 100vw;
+    background: radial-gradient(circle, rgba(226, 228, 233, 0.1) 30%, rgba(10, 12, 16, 0.7) 50%);
+    position: fixed;
+    top: 0;
+    z-index: -2;
+
+}
+
+ @media(max-width: 600px) {
+        .background {
+    height: 100dvh;
+    width: 100vw;
+  }
+
+    }
+
+.elementos span {
+    position: absolute;
+    font-size: 50px;
+    color: white;
+    z-index: -1;
+
+   
+}
+
+ @media(max-width: 600px) {
+    .elementos span {
+        font-size: 30px;
+    }
+}
+
+.numeros {
+    color: white;
+}
+
+
+.pos1 {
+    top: 5%;
+    left: 20%;
+}
+
+.pos2 {
+    top: 70%;
+    left: 70%;
+}
+
+.pos3 {
+    top: 25%;
+    left: 60%;
+}
+
+.pos4 {
+    top: 35%;
+    left: 10%;
+}
+
+.pos5 {
+    top: 05%;
+    left: 70%;
+}
+
+.pos6 {
+    top: 10%;
+    left: 60%;
+}
+
+.pos7 {
+    top: 65%;
+    left: 50%;
+}
+
+.pos8 {
+    top: 75%;
+    left: 40%;
+}
+
+.pos9 {
+    top: 85%;
+    left: 10%;
+}
+
+.pos10 {
+    top: 95%;
+    left: 70%;
+}
+
+.pos11 {
+    top: 50%;
+    left: 20%;
+}
+
+.pos12 {
+    top: 30%;
+    left: 70%;
+}
+
+.pos13 {
+    top: 50%;
+    left: 40%;
+}
+
+.pos14 {
+    top: 8%;
+    left: 10%;
+}
+
+.flutuante {
+  animation: flutuarLivreDesktop 40s linear infinite;
+}
+
+.surgindo {
+  animation: nascerDoFundoDesktop 20s linear infinite;
+}
+
+.nascer {
+  animation: NascerDesktop 30s linear infinite;
+}
+
+@media (max-width: 600px) {
+  .flutuante {
+    animation: flutuarLivreMobile 40s linear infinite;
+  }
+
+  .surgindo {
+    animation: nascerDoFundoMobile 20s linear infinite;
+  }
+
+  .nascer {
+    animation: NascerMobile 30s linear infinite;
+  }
+}
+
+/* Versões para desktop */
+@keyframes flutuarLivreDesktop {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(500px, -100px) rotate(90deg); }
+  50%  { transform: translate(-100px, 60px) rotate(180deg); }
+  75%  { transform: translate(80px, -100px) rotate(270deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes nascerDoFundoDesktop {
+  0%   { transform: scale(0.5) translateY(100vh); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: scale(1.2) translateY(-50vh); opacity: 0; }
+}
+
+@keyframes NascerDesktop {
+  0%   { transform: scale(0.5) translateX(100vw); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: scale(1.2) translateX(-50vw); opacity: 0; }
+}
+
+/* Versões para celular */
+@keyframes flutuarLivreMobile {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(25px, -12px) rotate(90deg); }
+  50%  { transform: translate(-20px, 10px) rotate(180deg); }
+  75%  { transform: translate(15px, -12px) rotate(270deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes nascerDoFundoMobile {
+  0%   { transform: scale(0.55) translateY(30vh); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: scale(1) translateY(-15vh); opacity: 0; }
+}
+
+@keyframes NascerMobile {
+  0%   { transform: scale(0.55) translateX(30vw); opacity: 0; }
+  50%  { opacity: 1; }
+  100% { transform: scale(1) translateX(-15vw); opacity: 0; }
+}
+
+
+
+.cadastro {
+    display: flex;
+    align-self: center;
+}
+
+#cadastroForm {
+    margin: 10% 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    border-radius: 10px;
+    background-color: rgba(13, 14, 15, 0.8);
+    width: 400px;
+    height: 400px;
+    border: 2px solid #fff;
+    z-index: 2;
+
+}
+
+@media(max-width: 600px) {
+    #cadastroForm {
+    width: 90%;
+    height: 80%;
+    margin: 40% 5%;
+  }
+}
+
+#botaoPrincipal {
+    margin-bottom: 20px;
+    width: 200px;
+    height: 30px;
+    background-color: #ff0000;
+    color: #fff;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    cursor: pointer;
+
+}
+
+#nome {
+    width: 80%;
+    height: 30px;
+    color: #fff;
+    font-size: 17px;
+    background-color: black;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    cursor: pointer;
+
+}
+
+#logarDireto {
+    height: 20px;
+    margin: 0;
+    position: relative;
+    top: 5px;
+    left: 130%;
+    gap: 0;
+    color: #fff;
+}
+
+ @media(max-width: 600px) {
+    #logarDireto {
+        left: 100%;
+    }
+}
+
+.logar {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 55px;
+    margin-left: 170px;
+    color: #fff;
+    position: relative;
+    top: 0;
+
+}
+
+.logar input[type="checkbox"] {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #000;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+   .logar input[type="checkbox"]:checked {
+        background-color: #ff0000;
+    }
+
+.avatar {
+    width: 80px;
+    border-radius: 50px;
+    border: 2px solid #fff;
+    cursor: pointer;
+}
+
+#cadatroForm {
+    color: #ff0000;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#cadatroForm p {
+    color: #fff;
+}
+
+#mensagemCadastro {
+    height: 30px;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+#gameOverArea {
+    display: none;
+}
+
+.fade-in {
+    animation: fadeIn 0.9s ease forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.9s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+#welcomeArea {
+    display: none;
+    background-color: rgba(13, 14, 15, 0.8);
+    width: 40%;
+    height: 80vh;
+    border-radius: 50px;
+    border: solid 2px #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5% auto;
+
+}
+
+@media(max-width:600px) {
+    #welcomeArea {
+        width: 90%;
+        height: 90dvh;
+
+    }
+}
+
+.imagemAvatar {
+    background-color: rgba(254, 255, 255, 0.1);
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    border: solid 2px #fff;
+    margin: auto;
+    margin-top: 20px;
+
+}
+
+.imagemAvatar img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+    }
+
+@media(max-width:600px) {
+    .imagemAvatar{
+        width: 70px;
+        height: 70px;
+    }
+     .imagemAvatar img{
+            height: 70px;
+            width: 70px;
+        }
+    }
+
+
+#avatarBoasVindas {
+    display: none;
+    border-radius: 50px;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+
+}
+
+.Texto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.Texto h2 {
+        color: #fff;
+        font-size: 22px;
+        font-weight: 600;
+        margin: 10px auto 0;
+    }
+
+.Texto p {
+        color: #fff;
+        font-size: 17px;
+        font-weight: 400;
+    }
+
+.Texto li {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 300;
+    }
+
+.Texto label {
+        color: #fff;
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+.Texto input[type="radio"] {
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 2px solid #000;
+        border-radius: 50%;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+.Texto input[type="radio"]:checked {
+        background-color: #ff0000;
+    }
+
+.Texto button {
+        background-color: #ff0000;
+        width: 150px;
+        height: 30px;
+        border-radius: 15px;
+        border: solid 2px #000;
+        color: #000;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+
+@media( max-width:600px){
+    .Texto h2 {
+            font-size: 19px;
+    }
+}
+
+#gameArea {
+    background-color: rgba(7, 7, 7, 0.7) ;
+    border-radius: 20px;
+    border: solid 3px #fff;
+    box-shadow: 2px 2px 4px 5px rgba(159, 162, 165, 0.6) ;
+    width: 600px;
+    height: 600px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: 4px;
+    margin: auto;
+    margin-top: 5%;
+}
+
+#gameArea p{
+    color:#fff;
+    text-align: center;
+}
+
+#nivelInfo  {
+    color: #fff;
+    text-align: center;
+}
+
+  #avatarJogo {
+        margin-top: 0;
+    }
+
+.informacaoDoUsuario {
+    display: flex;
+    justify-content: space-between;
+    }
+
+#vidasContainer {
+        font-size: 30px;
+        color: #fff;
+        position: relative;
+        top: 0;
+        left: 96%;
+        
+    }
+
+  #palpite {
+        background-color: #000;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 5px;
+        width: 200px;
+        height: 30px;
+        margin:0 0 0 20%;
+        align-self: center;
+        justify-content: center;
+        text-align: center;
+        border: none;
+    }
+
+ #enviarPalpite {
+        background-color: #ff0000;
+        width: 150px;
+        height: 30px;
+        color: #000;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 5px; 
+        cursor: pointer;
+    }
+
+.sair {
+        width: 80px;
+        height: 25px;
+        background-color: #ff0000;
+        color: #000;
+        font-size: 18px;
+        font-weight: 500;
+        border: solid 2px #000;
+        border-radius: 20px;
+        position: relative;
+        top: 3px;
+        right: 95%;
+    }
+
+ #gameArea .Fundo{
+        position: relative;
+        width: 100%;
+        height: 1%;
+        display: flex;
+        bottom: 12px;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+}
+#gameArea .Fundo p { 
+           font-size: 12px;
+           color: #fff;
+           text-shadow: none;
+
+        }
+
+#gameArea .Fundo img {
+            width: 12px;
+            height: 12px;
+            cursor: pointer;
+        }
+    
+#gameArea .Fundo a{
+    cursor: pointer;
+}  
+
+@media( max-width:600px) {
+      #gameArea {
+        position: relative;
+        width: 96%;
+        height: 80dvh;
+        margin-top: 15%;
+      }  
+      #vidasContainer{
+        font-size: 20px;
+        left: 75%;
+      }
+      #palpite{
+        width: 40%;
+        margin-left: 10%;
+        
+      }
+      #enviarPalpite {
+        width: 40%;
+      }
+      .sair {
+        width: 60px;
+        right: 75%;
+      }
+      #gameArea .Fundo{
+        height: 5px;
+        margin-top: 0;
+        position: absolute;
+        bottom: 12px;
+        left: 0;
+    
+    }
+    #gameArea .Fundo p {
+        font-size: 10px;
+    }
+    #gameArea .Fundo img  {
+        margin: 5px;
+        width: 16px;
+        height: 16px;
+    }
+    }
+
+input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+         margin: auto;
+         color: #fff;
+         }
+ 
+
+.ranking-mini h3{
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+    }
+.ranking-mini ul{
+        list-style: none;
+        color: #fff;
+        font-size: 16px;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+    }
+
+.miniRanking {
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        height: 40px;
+
+    }
+
+.avatarMiniRanking {
+        width: 30px;
+        height: 30px;
+        border-radius: 50px;
+        border: 2px solid #fff;
+        background-color: rgba(254, 255, 255, 0.2);
+        margin-right:8px ;
+}
+
+.avatarMiniRanking img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50px;
+            
+        }
+    
+
+    .trofeu {
+        font-size: 25px;
+    }
+
+.ranking-mini button {
+        width: 170px;
+        height: 25px;
+        background-color: #ff0000;
+        font-size: 16px;
+        font-weight: 500;
+        color: #000;
+        border-radius: 20px;
+        margin: 0 35%;
+        cursor: pointer;
+    }
+
+    @media(max-width:600px) {
+        .ranking-mini ul{
+            font-size: 14px;
+            padding: 0;
+        }
+        .ranking-mini button {
+            margin: 10% 25%;
+        }
+    }
+
+#rankingArea {
+    width: 500px;
+    height: 550px;
+    border-radius: 20px;
+    border: 3px solid #000;
+    background-color:rgba(210, 218, 226, 0.6);
+    align-items: center;
+    justify-content: center;
+    margin: 10% auto;
+}
+#rankingArea h2 {
+        font-size: 22px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+#rankingArea ul{
+        list-style: none;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .RankingGeal {
+        display: flex;
+        align-items: center;
+        height: 40px;
+    }
+
+    .simbolos {
+        font-size: 30px;
+    }
+
+    .avatarRankingGeral {
+        width: 35px;
+        height: 35px;
+        background-color: rgba(26, 27, 27, 0.6);
+        border-radius: 50px;
+        border: 2px solid #000;
+        margin-right:8px ;
+    }
+
+.avatarRankingGeral img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50px;
+        }
+
+#rankingArea button {
+        background-color: #000;
+        color: #ff0000;
+        font-size: 15px;
+        font-weight: 600;
+        height: 25px;
+        width: 100px;
+        border-radius: 50px;
+        cursor: pointer;
+        margin: 0 40%;
+    }
+
+@media(max-width:600px) {
+    #rankingArea {
+        width: 92%;
+        height: 70dvh;
+        margin-top: 25%;
+
+    }
+    #rankingArea h2{
+        margin: 10% auto;
+    }
+    #rankingArea ul {
+        padding: 0;
+        font-size: 14px;
+    }
+    #rankingArea button{
+        margin: 2% 35%;
+    }
+}
+
+#gameOverArea {
+    position: relative;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    background-color:rgba(210, 218, 226, 0.6) ;
+    border: 3px solid #000;
+    border-radius: 50px;
+    margin: 10% 33%;
+    text-align: center;
+}
+
+#gameOverArea h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 10%;
+    }
+   
+#gameOverArea p {
+        color:rgb(250, 3, 3);
+        font-size: 17px;
+        font-weight: 700;
+        text-shadow: 2px 2px 2px #000;
+    }
+#gameOverArea button {
+        background-color:rgb(250, 3, 3) ;
+        border-radius: 50px;
+        border: 2px solid #000;
+        cursor: pointer;
+        height: 30px;
+        width: 100px;
+        font-size: 17px;
+        font-weight: 700;
+        margin: auto;
+    }
+
+     @media(max-width:600px) {
+        #gameOverArea {
+            width: 90%;
+            height: 40dvh;
+            margin: 45% 5%;
+        }
+        #gameOverArea h2 {
+            font-size: 16px;
+            margin-top:25% ;
+
+        }
+    }
+
+#vidaPerdidaArea {
+    position: relative;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    background-color:rgba(210, 218, 226, 0.6) ;
+    border: 3px solid #000;
+    border-radius: 50px;
+    margin: 10% 33%;
+}
+
+#vidaPerdidaArea h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 10%;
+    }
+   
+#vidaPerdidaArea p {
+        color:rgb(3, 221, 250);
+        font-size: 17px;
+        font-weight: 700;
+        text-shadow: 2px 2px 2px #000;
+    }
+#vidaPerdidaArea button {
+        background-color:rgb(3, 221,250) ;
+        border-radius: 50px;
+        border: 2px solid #000;
+        cursor: pointer;
+        height: 30px;
+        width: 100px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    @media(max-width:600px) {
+        #vidaPerdidaArea {
+            width: 90%;
+            height: 40dvh;
+            margin: 45% 5%;
+        }
+        #vidaPerdidaArea h2 {
+            font-size: 16px;
+            margin-top:25% ;
+
+        }
+    }
+
+#vitoriaArea {
+    position: relative;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    background-color:rgba(210, 218, 226, 0.6) ;
+    border: 3px solid #000;
+    border-radius: 50px;
+    margin: 10% 33%;
+}
+#vitoriaArea h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 10%;
+    }
+   
+#vitoriaArea p {
+        color: rgb(13, 252, 5);
+        font-size: 17px;
+        font-weight: 700;
+        text-shadow: 2px 2px 2px #000;
+    }
+#vitoriaArea button {
+        background-color:rgb(13, 252, 5) ;
+        border-radius: 50px;
+        border: 2px solid #000;
+        cursor: pointer;
+        height: 30px;
+        width: 100px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    
+@media(max-width:600px){
+        #vitoriaArea {
+            width: 90%;
+            height: 40dvh;
+            margin: 45% 5%;
+        }
+        #vitoriaArea h2 {
+            font-size: 16px;
+            margin-top:25% ;
+
+        }
+    }
+#vitoriaFinalArea {
+    position: relative;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    background-color:rgba(210, 218, 226, 0.6) ;
+    border: 3px solid #000;
+    border-radius: 50px;
+    margin: 10% 33%;
+}
+#vitoriaFinalArea h2 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 10%;
+    }
+   
+#vitoriaFinalArea p {
+        color: rgb(252, 96, 10);
+        font-size: 17px;
+        font-weight: 700;
+        text-shadow: 2px 2px 2px #000;
+    }
+#vitoriaFinalArea button {
+        background-color:rgb(252, 96, 10) ;
+        border-radius: 50px;
+        border: 2px solid #000;
+        cursor: pointer;
+        height: 30px;
+        width: 100px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+@media(max-width:600px){
+        #vitoriaFinalArea {
+            width: 90%;
+            height: 40dvh;
+            margin: 45% 5%;
+        }
+        #vitoriaFinalArea h2 {
+            font-size: 16px;
+            margin-top:25% ;
+
+        }
+    }
+
+#telaMotivacional {
+    position: relative;
+    width: 650px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+    background-color:rgba(7, 7, 7, 0.9) ;
+    border: 3px solid #fff;
+    border-radius: 50px;
+    margin: 5% 31%;
+}
+#telaMotivacional h2 {
+        color: chartreuse;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 5%;
+        
+    }
+   
+.mensagemMotivacional {
+        color: rgb(5, 240, 248);
+        font-size: 16px;
+        font-weight: 700;
+        text-shadow: 2px 1px 2px #fff;
+    }
+#telaMotivacional button {
+        background-color:rgb(5, 240, 248) ;
+        border-radius: 50px;
+        border: 2px solid #fff;
+        cursor: pointer;
+        height: 30px;
+        width: 200px;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+.textoHill{
+        color: #fff;
+        text-shadow: none;
+        font-size: 15px;
+    }
+
+ #telaMotivacional .Fundo{
+        margin-top: 14%;
+        position: relative;
+        width: 100%;
+        height: 1%;
+        display: flex;
+        bottom: 0;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+}
+#telaMotivacional .Fundo p { 
+           font-size: 12px;
+           color: #fff;
+           text-shadow: none;
+
+        }
+
+ #telaMotivacional .Fundo img {
+            width: 12px;
+            height: 12px;
+            cursor: pointer;
+        }
+    
+#telaMotivacional .Fundo a{
+    cursor: pointer;
+}      
+@media(max-width:600px){
+    #telaMotivacional{
+        width: 90%;
+        height: 60dvh;
+        margin: 10% auto;
+        border-radius: 13px;
+    }
+    #telaMotivacional h2 {
+        font-size: 16px;
+    }
+    .mensagemMotivacional {
+        font-size: 14px;
+    }
+    #telaMotivacional .Fundo{
+        height: 5px;
+        position: relative;
+        bottom: 0;
+    }
+    #telaMotivacional .Fundo p {
+        font-size: 10px;
+    }
+    #telaMotivacional .Fundo img  {
+        margin: 5px;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.confete {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.confete span {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: hsl(var(--hue), 100%, 50%);
+  animation: cair 2s ease-out forwards;
+}
+
+@keyframes cair {
+  to {
+    transform: translateY(100%) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.coracao {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.coracao span {
+  animation: estourar 2s ease-out forwards;
+  display: inline-block;
+}
+
+@keyframes estourar {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(2); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.gameOverEfeito {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.gameOverAnimado {
+  animation: subir 2s ease-out forwards;
+  display: inline-block;
+}
+
+@keyframes subir {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  50% { transform: translateY(-50px) scale(1.2); opacity: 0.8; }
+  100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+}
+
+.trofeuEfeito {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 80px;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.trofeuEfeito span {
+  animation: trofeuExplode 1.5s ease-out forwards;
+  display: inline-block;
+}
+
+@keyframes trofeuExplode {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(2); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.coroaEfeito {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 100px;
+  pointer-events: none;
+  z-index: 999;
+}
+
+.coroaAnimada {
+  animation: coroaSurge 2s ease-out forwards;
+  display: inline-block;
+}
+
+@keyframes coroaSurge {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}

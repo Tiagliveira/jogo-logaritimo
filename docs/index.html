@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <title>jogo-logoritmos</title>
+</head>
+
+<body>
+  <!--area bakground e animação-->
+  <div class="Fundo">
+    <div class="background">
+
+    </div>
+    <div class="background-image"></div>
+    <div class="elementos">
+      <span class="emogi pos1 flutuante">🚀</span>
+      <span class="emogi pos2 flutuante">👽</span>
+      <span class="emogi pos3 flutuante">🛸</span>
+      <span class="emogi pos4 flutuante">🧑🏻‍🚀</span>
+      <span class="numeros pos5 flutuante">1</span>
+      <span class="numeros pos6 flutuante">2</span>
+      <span class="numeros pos7 flutuante">3</span>
+      <span class="numeros pos8 flutuante">4</span>
+      <span class="numeros pos9 flutuante">5</span>
+      <span class="numeros pos10 flutuante">6</span>
+      <span class="numeros pos11 flutuante">7</span>
+      <span class="numeros pos12 flutuante">8</span>
+      <span class="numeros pos13 flutuante">9</span>
+      <span class="numeros pos14 flutuante">0</span>
+      <span class="emogi pos1 surgindo ">🚀</span>
+      <span class="emogi pos2 surgindo ">👽</span>
+      <span class="emogi pos3 surgindo ">🛸</span>
+      <span class="emogi pos4 surgindo ">🧑🏻‍🚀</span>
+      <span class="numeros pos5 surgindo ">1</span>
+      <span class="numeros pos6 surgindo ">2</span>
+      <span class="numeros pos7 surgindo ">3</span>
+      <span class="numeros pos8 surgindo ">4</span>
+      <span class="numeros pos9 surgindo ">5</span>
+      <span class="numeros pos10 surgindo ">6</span>
+      <span class="numeros pos11 surgindo ">7</span>
+      <span class="numeros pos12 surgindo ">8</span>
+      <span class="numeros pos13 surgindo ">9</span>
+      <span class="numeros pos14 surgindo ">0</span>
+      <span class="emogi pos1  nascer">🚀</span>
+      <span class="emogi pos2  nascer">👽</span>
+      <span class="emogi pos3  nascer">🛸</span>
+      <span class="emogi pos4  nascer">🧑🏻‍🚀</span>
+      <span class="numeros pos5  nascer">1</span>
+      <span class="numeros pos6  nascer">2</span>
+      <span class="numeros pos7  nascer">3</span>
+      <span class="numeros pos8  nascer">4</span>
+      <span class="numeros pos9  nascer">5</span>
+      <span class="numeros pos10  nascer">6</span>
+      <span class="numeros pos11  nascer">7</span>
+      <span class="numeros pos12  nascer">8</span>
+      <span class="numeros pos13  nascer">9</span>
+      <span class="numeros pos14  nascer">0</span>
+    </div>
+    <!-- Área de cadastro ou login-->
+  </div>
+  <div class="formulario">
+
+    <form class="cadastro" id="cadastroForm" onsubmit="return false;">
+      <label class="logar">
+        <input type="checkbox" id="logarDireto" onchange="atualizarBotao()">Fazer Login
+      </label>
+      <p id="mensagemCadastro"></p>
+      <img id="avatarCadastro" style="display: none; width: 100px;">
+      <img class="avatar" src="/assets/user.png">
+      <input type="text" id="nome" placeholder="Nome de Usuário">
+      <button id="botaoPrincipal" type="button">Cadastrar usuário</button>
+    </form>
+  </div>
+
+  <!-- Tela de boas-vindas (inicialmente escondida) -->
+  <div id="welcomeArea">
+    <div class="imagemAvatar">
+      <img id="avatarBoasVindas" alt="Avatar do jogador">
+    </div>
+    <div class="Texto">
+      <h2 id="nomeJogador"></h2>
+      <h2>Seja bem vindo! </h2>
+      <p>🧠 Regras do jogo:</p>
+      <ul>
+        <li>🎯 Encontre o número secreto que muda a cada nível.</li>
+        <li>🧠 Raciocine com lógica — o desafio é baseado em logaritmos.</li>
+        <li>❤️ Você tem 3 vidas e poucas chances por fase.</li>
+        <li>🚀 Acerte, evolua e prove sua inteligência.</li>
+
+      </ul>
+      <p>Escolha o modo de jogo:</p>
+      <label><input type="radio" name="modo" value="facil" checked> Fácil (com histórico)</label><br>
+      <label><input type="radio" name="modo" value="dificil"> Difícil (sem histórico)</label><br>
+      <button onclick="entrarNoJogo()">Jogar agora</button>
+    </div>
+  </div>
+
+  <!-- Área do jogo    -->
+  <div id="gameArea" style="display: none;">
+    <div class="informacaoDoUsuario">
+      <button class="sair" onclick="sairDoJogo()">Sair</button>
+      <div id="vidasContainer"></div>
+    </div>
+    <div class="imagemAvatar">
+      <img id="avatarJogo" alt="Avatar do jogador">
+    </div>
+    <p id="nivelInfo"></p>
+    <input type="number" id="palpite" placeholder="Seu palpite">
+    <button id="enviarPalpite" onclick="jogar()">Enviar palpite</button>
+    <p id="mensagemJogo"></p>
+    <p id="historico"></p>
+
+    <div id="painelRanking" class="ranking-mini">
+      <h3>🏆 Top 3 Jogadores</h3>
+      <ul id="topRanking"></ul>
+      <button onclick="mostrarRankingCompleto()">Ver ranking completo</button>
+      <div class="Fundo">
+      <p> — Tiago Oliveira @2025🎮 este game foi desenvolvido apenas para estudo</p>
+      <a href="https://tiagliveira.github.io/portfoliodevto/" target="_blank" rel="noopener noreferrer"><img
+          src="/assets/internet.png"></a>
+    </div>
+    </div>
+
+  </div>
+<!-- area gamer over-->
+  <div id="gameOverArea" style="display: none;">
+    <div id="explosaoGameOver" class="gameOverEfeito"></div>
+    <h2 id="mensagemFinal"></h2>
+    <p>Você perdeu todas as vidas.<br> vamos reiniciar?</p>
+    <button onclick="reiniciarJogo()">Reiniciar</button>
+  </div>
+<!-- area perva de vida-->
+  <div id="vidaPerdidaArea" style="display: none; text-align: center;">
+    <div id="explosaoCoracao" class="coracao"></div>
+    <h2 id="mensagemVidaPerdida"></h2>
+    <p>Você perdeu uma vida.<br> Vamos tentar de novo?</p>
+    <button onclick="continuarJogo()">Continuar</button>
+  </div>
+<!-- area vitoria nivel-->
+  <div id="vitoriaArea" style="display: none;">
+    <div id="explosaoTrofeu" class="trofeuEfeito"></div>
+    <div id="confeteExplosao" class="confete"></div>
+    <h2 id="mensagemVitoria"></h2>
+    <p>Você passou de nível!<br> Vamos para o proximo nivel?</p>
+    <button onclick="continuarVitoria()">Proximo</button>
+  </div>
+<!-- area ranking geral-->
+  <div id="rankingArea" class="ranking-full" style="display: none;">
+    <h2>🌟 Ranking Geral</h2>
+    <ul id="listaRankingCompleto"></ul>
+    <button onclick="voltarDoRanking()">Voltar</button>
+  </div>
+<!-- area vitoria nivel 10-->
+  <div id="vitoriaFinalArea" style="display: none;">
+    <div id="explosaoCoroa" class="coroaEfeito"></div>
+    <h2 id="mensagemFinalVitoria"></h2>
+    <p>Você venceu todos os 10 níveis!<br> 👑 Campeão absoluto!</p>
+    <button onclick="mostrarTelaMotivacional()">Continuar</button>
+  </div>
+<!-- tela final-->
+  <div id="telaMotivacional" style="display: none; text-align: center;">
+    <h2>✨ Obrigado por jogar, <span id="nomeFinal"></span>!</h2>
+    <p class="mensagemMotivacional">
+      Você chegou até o fim, superando cada desafio com inteligência e coragem.<br>
+      Parabéns por vencer todos os desafios!<br>
+      Você provou que é inteligente, persistente e determinado.<br>
+      Poucos chegam até aqui — e você foi além.<br>
+      Aplique essa dedicação, foco e inteligência na sua vida — e colherá conquistas ainda maiores.<br>
+      Continue brilhando, <span id="nomeFinal2"></span>! O sucesso te espera! ✨<br>
+      <br>
+
+    </p>
+    <p class="textoHill">Como dizia Napoleon Hill: todo obstáculo carrega consigo a semente de um benefício maior.<br>
+      Que essa jornada te lembre do quanto você é capaz de transformar dificuldades em conquistas!
+    </p>
+    <button onclick="reiniciarJogo()">Jogar novamente</button>
+    <div class="Fundo">
+      <p> — Tiago Oliveira @2025🎮 este game foi desenvolvido apenas para estudo</p>
+
+      <a href="https://tiagliveira.github.io/portfoliodevto/" target="_blank" rel="noopener noreferrer"><img
+          src="/assets/internet.png"></a>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
