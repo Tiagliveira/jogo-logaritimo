@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const User = require("../mongo");
+const User = require("./mongo");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -8,7 +8,7 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: "https://tiagliveira.github.io/jogo-logaritimo/", // seu frontend
+  origin: "https://tiagliveira.github.io", // seu frontend
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
