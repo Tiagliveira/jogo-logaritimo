@@ -95,20 +95,7 @@ app.post("/verificar-id", async (req, res) => {
 });
 
 // 📌 Ranking
-app.get("/ranking", async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://tiagliveira.github.io");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  try {
-    const ranking = await User.find({}, "id nivelMaximo avatar")
-      .sort({ nivelMaximo: -1 })
-      .limit(10);
-    res.json(ranking);
-  } catch (err) {
-    res.status(500).send("Erro ao buscar ranking");
-  }
-});
 
 // 📌 Atualizar ranking
 app.post("/atualizar-ranking", async (req, res) => {
