@@ -6,7 +6,7 @@
  */
 const API_URL = location.hostname === "localhost"
   ? "http://localhost:3000"
-  : "https://jogo-logaritimo.vercel.app/api";
+  : "https://jogo-logaritimo.vercel.app";
 // ===============================
 // Variáveis globais do jogo
 // ===============================
@@ -89,7 +89,7 @@ async function cadastrar() {
   const avatarUrl = `https://api.dicebear.com/7.x/${estiloAleatorio}/svg?seed=${encodeURIComponent(nome)}`;
 
   // Envia dados para o backend hospedado na Vercel
-  const resposta = await fetch(`${API_URL}/cadastro`, {
+  const resposta = await fetch(`${API_URL}/api/cadastro`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: nome, avatar: avatarUrl }),
@@ -168,7 +168,7 @@ async function cadastrar() {
 async function login() {
   const nome = document.getElementById("nome").value;
 
-  const resposta = await fetch(`${API_URL}/login`, {
+  const resposta = await fetch(`${API_URL}/api/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: nome }),
@@ -224,7 +224,7 @@ async function login() {
 // ==================================================
 async function salvarHistorico(nomeDoJogador, palpites) {
   try {
-    await fetch(`${API_URL}/salvar-historico`, {
+    await fetch(`${API_URL}/api/salvar-historico`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -353,7 +353,7 @@ window.addEventListener("DOMContentLoaded", () => {
 // ==================================================
 async function carregarRanking() {
   try {
-    const resposta = await fetch(`${API_URL}/ranking`);
+    const resposta = await fetch(`${API_URL}/api/ranking`);
     const ranking = await resposta.json();
 
     const nomeAtual = localStorage.getItem("nomeJogador");
@@ -471,7 +471,7 @@ async function reiniciarJogo() {
 
   const nomeJogador = localStorage.getItem("nomeJogador");
 
-  await fetch(`${API_URL}/reiniciar-nivel`, {
+  await fetch(`${API_URL}/api/reiniciar-nivel`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id: nomeJogador }),
@@ -490,7 +490,7 @@ async function continuarJogo() {
 
   const nomeJogador = localStorage.getItem("nomeJogador");
 
-  await fetch(`${API_URL}/atualizar-nivel`, {
+  await fetch(`${API_URL}/api/atualizar-nivel`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -523,7 +523,7 @@ async function continuarVitoria() {
   const nomeJogador = localStorage.getItem("nomeJogador");
 
   try {
-    await fetch(`${API_URL}/atualizar-nivel`, {
+    await fetch(`${API_URL}/api/atualizar-nivel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -876,7 +876,7 @@ async function jogar() {
   currentLevel++;
 
   try {
-    await fetch(`${API_URL}/atualizar-nivel`, {
+    await fetch(`${API_URL}/api/atualizar-nivel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
