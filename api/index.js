@@ -8,7 +8,7 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: "https://tiagliveira.github.io", // seu frontend
+  origin: "https://tiagliveira.github.io/jogo-logaritimo/", // seu frontend
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"]
 }));
