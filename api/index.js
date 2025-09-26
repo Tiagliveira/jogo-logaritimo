@@ -14,6 +14,13 @@ app.use(cors({
 }));
 app.use("/assets", express.static(path.join(__dirname, "../assets")));
 
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://tiagliveira.github.io");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
+
 // 📌 Cadastro de novo jogador
 app.post("/cadastro", async (req, res) => {
   const { id, avatar } = req.body;
@@ -89,11 +96,15 @@ app.post("/verificar-id", async (req, res) => {
 
 // 📌 Ranking
 app.get("/ranking", async (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://tiagliveira.github.io");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   try {
     const ranking = await User.find({}, "id nivelMaximo avatar")
       .sort({ nivelMaximo: -1 })
       .limit(10);
-    res.send(ranking);
+    res.json(ranking);
   } catch (err) {
     res.status(500).send("Erro ao buscar ranking");
   }
