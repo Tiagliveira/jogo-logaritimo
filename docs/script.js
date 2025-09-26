@@ -6,7 +6,7 @@
  */
 const API_URL = location.hostname === "localhost"
   ? "http://localhost:3000"
-  : "https://jogo-logaritimo.vercel.app";
+  : "https://jogo-logaritimo.vercel.app/api";
 // ===============================
 // Variáveis globais do jogo
 // ===============================
