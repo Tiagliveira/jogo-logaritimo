@@ -4,9 +4,14 @@ const User = require("./mongo");
 const cors = require("cors");
 require("dotenv").config();
 
+
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "https://tiagliveira.github.io", // seu frontend
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
 app.use("/assets", express.static(path.join(__dirname, "../assets")));
 
 // 📌 Cadastro de novo jogador
