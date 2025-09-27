@@ -85,7 +85,7 @@ async function cadastrar() {
 
   const estilos = ["bottts", "adventurer", "fun-emoji", "lorelei", "thumbs", "shapes", "notionists"];
   const estiloAleatorio = estilos[Math.floor(Math.random() * estilos.length)];
-  const avatarUrl = `https://api.dicebear.com/7.x/${estiloAleatorio}/svg?seed=${encodeURIComponent(nome)}`;
+  const avatarUrl = `https://api.dicebear.com/7.x/${estiloAleatorio}/png?seed=${encodeURIComponent(nome)}`;
 
   let respostaCadastro;
   try {
