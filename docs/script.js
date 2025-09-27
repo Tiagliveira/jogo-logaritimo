@@ -73,8 +73,8 @@ function atualizarBotao() {
 // ==================================================
 async function cadastrar() {
   const nomeInput = document.getElementById("nome");
-  const nome = nomeInput.value.trim();
-  const logarDireto = document.getElementById("logarDireto").checked;
+  const nome = nomeInput?.value.trim();
+  const logarDireto = document.getElementById("logarDireto")?.checked;
   const mensagem = document.getElementById("mensagemCadastro");
   const avatarCadastro = document.getElementById("avatarCadastro");
 
@@ -106,20 +106,28 @@ async function cadastrar() {
     mensagem.textContent = "✅ " + texto;
     mensagem.style.color = "green";
 
+    localStorage.setItem("estadoTela", "boasVindas");
+    localStorage.setItem("avatarJogador", avatarUrl);
+    localStorage.setItem("nomeJogador", nome);
+
     const nomeJogador = document.getElementById("nomeJogador");
     if (nomeJogador) nomeJogador.textContent = `👤 Jogador: ${nome}`;
 
     const avatarBoasVindas = document.getElementById("avatarBoasVindas");
     const imgTemp = new Image();
     imgTemp.onload = () => {
-      avatarBoasVindas.src = avatarUrl;
-      avatarBoasVindas.style.display = "block";
+      if (avatarBoasVindas) {
+        avatarBoasVindas.src = avatarUrl;
+        avatarBoasVindas.style.display = "block";
+      }
       transicaoDeTela("formulario", "welcomeArea");
     };
     imgTemp.src = avatarUrl;
 
-    avatarCadastro.src = avatarUrl;
-    avatarCadastro.style.display = "block";
+    if (avatarCadastro) {
+      avatarCadastro.src = avatarUrl;
+      avatarCadastro.style.display = "block";
+    }
 
     const avatarJogo = document.getElementById("avatarJogo");
     if (avatarJogo) {
@@ -127,12 +135,7 @@ async function cadastrar() {
       avatarJogo.style.display = "block";
     }
 
-    localStorage.setItem("estadoTela", "boasVindas");
-    localStorage.setItem("avatarJogador", avatarUrl);
-
-    const palpitesIniciais = ["5", "8", "3"];
-    salvarHistorico(nome, palpitesIniciais);
-
+    salvarHistorico(nome, ["5", "8", "3"]);
     nomeInput.value = nome;
 
     await login(); // login automático
@@ -140,13 +143,15 @@ async function cadastrar() {
     mensagem.textContent = "⚠️ Usuário já existe. Escolha outro nome.";
     mensagem.style.color = "orange";
     nomeInput.value = "";
-    avatarCadastro.style.display = "none";
-    document.getElementById("logarDireto").checked = false;
+    if (avatarCadastro) avatarCadastro.style.display = "none";
+    if (document.getElementById("logarDireto")) {
+      document.getElementById("logarDireto").checked = false;
+    }
     atualizarBotao();
   } else {
     mensagem.textContent = "⚠️ " + texto;
     mensagem.style.color = "red";
-    avatarCadastro.style.display = "none";
+    if (avatarCadastro) avatarCadastro.style.display = "none";
   }
 }
 
@@ -155,7 +160,7 @@ async function cadastrar() {
 // Descrição: Realiza login do jogador e atualiza interface com dados do servidor
 // ==================================================
 async function login() {
-  const nome = document.getElementById("nome").value.trim();
+  const nome = document.getElementById("nome")?.value.trim();
   const mensagem = document.getElementById("mensagemCadastro");
   const avatarJogo = document.getElementById("avatarJogo");
 
@@ -183,14 +188,13 @@ async function login() {
     mensagem.style.color = "blue";
 
     if (dados.dados.avatar) {
-      avatarJogo.src = dados.dados.avatar;
-      avatarJogo.style.display = "block";
+      if (avatarJogo) {
+        avatarJogo.src = dados.dados.avatar;
+        avatarJogo.style.display = "block";
+      }
       localStorage.setItem("avatarJogador", dados.dados.avatar);
       localStorage.setItem("nomeJogador", nome);
     }
-
-    document.querySelector(".formulario").style.display = "none";
-    document.getElementById("welcomeArea").style.display = "block";
 
     const avatarBoasVindas = document.getElementById("avatarBoasVindas");
     if (avatarBoasVindas) {
@@ -199,12 +203,15 @@ async function login() {
     }
 
     const nomeJogador = document.getElementById("nomeJogador");
-    if (nomeJogador) nomeJogador.textContent = ` olá ${nome}`;
+    if (nomeJogador) nomeJogador.textContent = `Olá ${nome}`;
+
+    document.querySelector(".formulario").style.display = "none";
+    document.getElementById("welcomeArea").style.display = "block";
   } catch (err) {
     const texto = await respostaLogin.text();
     mensagem.textContent = "🚫 " + texto;
     mensagem.style.color = "red";
-    avatarJogo.style.display = "none";
+    if (avatarJogo) avatarJogo.style.display = "none";
     console.log("Resposta do servidor:", respostaLogin.status);
   }
 
