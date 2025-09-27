@@ -78,38 +78,37 @@ async function cadastrar() {
   const mensagem = document.getElementById("mensagemCadastro");
   const avatarCadastro = document.getElementById("avatarCadastro");
 
-  if (!nome) {
-    alert("Digite um nome válido!");
+  if (!nome || nome.length < 3) {
+    alert("Digite um nome válido com pelo menos 3 caracteres!");
     return;
   }
 
-  // Gera avatar aleatório com DiceBear
   const estilos = ["bottts", "adventurer", "fun-emoji", "lorelei", "thumbs", "shapes", "notionists"];
   const estiloAleatorio = estilos[Math.floor(Math.random() * estilos.length)];
   const avatarUrl = `https://api.dicebear.com/7.x/${estiloAleatorio}/svg?seed=${encodeURIComponent(nome)}`;
 
-  // Envia dados para o backend hospedado na Vercel
-  const resposta = await fetch(`${API_URL}/api/cadastro`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: nome, avatar: avatarUrl }),
-  });
+  let respostaCadastro;
+  try {
+    respostaCadastro = await fetch(`${API_URL}/api/cadastro`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: nome, avatar: avatarUrl }),
+    });
+  } catch (err) {
+    mensagem.textContent = "🚫 Erro de conexão com o servidor";
+    mensagem.style.color = "red";
+    return;
+  }
 
-  const texto = await resposta.text();
+  const texto = await respostaCadastro.text();
 
-  if (resposta.ok) {
-    // ✅ Cadastro bem-sucedido
+  if (respostaCadastro.ok) {
     mensagem.textContent = "✅ " + texto;
     mensagem.style.color = "green";
 
-    // Atualiza nome do jogador
     const nomeJogador = document.getElementById("nomeJogador");
-    if (nomeJogador) {
-      nomeJogador.textContent = `👤 Jogador: ${nome}`;
-      console.log("Nome do jogador:", nome);
-    }
+    if (nomeJogador) nomeJogador.textContent = `👤 Jogador: ${nome}`;
 
-    // Aguarda carregamento do avatar antes da transição
     const avatarBoasVindas = document.getElementById("avatarBoasVindas");
     const imgTemp = new Image();
     imgTemp.onload = () => {
@@ -119,7 +118,6 @@ async function cadastrar() {
     };
     imgTemp.src = avatarUrl;
 
-    // Atualiza avatares
     avatarCadastro.src = avatarUrl;
     avatarCadastro.style.display = "block";
 
@@ -129,32 +127,23 @@ async function cadastrar() {
       avatarJogo.style.display = "block";
     }
 
-    // Salva dados localmente
     localStorage.setItem("estadoTela", "boasVindas");
-    localStorage.setItem("nomeJogador", nome);
     localStorage.setItem("avatarJogador", avatarUrl);
 
-    // Salva histórico inicial
     const palpitesIniciais = ["5", "8", "3"];
     salvarHistorico(nome, palpitesIniciais);
 
     nomeInput.value = nome;
 
-    // Faz login automático após cadastro
-    await login();
-
+    await login(); // login automático
   } else if (texto === "Usuário já existe") {
-    // ⚠️ Nome já cadastrado
     mensagem.textContent = "⚠️ Usuário já existe. Escolha outro nome.";
     mensagem.style.color = "orange";
     nomeInput.value = "";
     avatarCadastro.style.display = "none";
-
     document.getElementById("logarDireto").checked = false;
     atualizarBotao();
-
   } else {
-    // ⚠️ Outro erro
     mensagem.textContent = "⚠️ " + texto;
     mensagem.style.color = "red";
     avatarCadastro.style.display = "none";
@@ -166,19 +155,25 @@ async function cadastrar() {
 // Descrição: Realiza login do jogador e atualiza interface com dados do servidor
 // ==================================================
 async function login() {
-  const nome = document.getElementById("nome").value;
-
-  const resposta = await fetch(`${API_URL}/api/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: nome }),
-  });
-
+  const nome = document.getElementById("nome").value.trim();
   const mensagem = document.getElementById("mensagemCadastro");
   const avatarJogo = document.getElementById("avatarJogo");
 
-  if (resposta.ok) {
-    const dados = await resposta.json();
+  let respostaLogin;
+  try {
+    respostaLogin = await fetch(`${API_URL}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: nome }),
+    });
+  } catch (err) {
+    mensagem.textContent = "🚫 Erro de conexão com o servidor";
+    mensagem.style.color = "red";
+    return;
+  }
+
+  try {
+    const dados = await respostaLogin.json();
 
     currentLevel = dados.dados.nivel;
     lives = typeof dados.dados.vidas === "number" ? dados.dados.vidas : 3;
@@ -187,10 +182,9 @@ async function login() {
     mensagem.textContent = "🛸 " + dados.mensagem;
     mensagem.style.color = "blue";
 
-    if (dados.dados && dados.dados.avatar) {
+    if (dados.dados.avatar) {
       avatarJogo.src = dados.dados.avatar;
       avatarJogo.style.display = "block";
-
       localStorage.setItem("avatarJogador", dados.dados.avatar);
       localStorage.setItem("nomeJogador", nome);
     }
@@ -205,17 +199,20 @@ async function login() {
     }
 
     const nomeJogador = document.getElementById("nomeJogador");
-    if (nomeJogador) {
-      nomeJogador.textContent = ` olá ${nome}`;
-    }
-  } else {
-    mensagem.textContent = "🚫 " + (await resposta.text());
+    if (nomeJogador) nomeJogador.textContent = ` olá ${nome}`;
+  } catch (err) {
+    const texto = await respostaLogin.text();
+    mensagem.textContent = "🚫 " + texto;
     mensagem.style.color = "red";
     avatarJogo.style.display = "none";
-    console.log("Resposta do servidor:", resposta.status);
+    console.log("Resposta do servidor:", respostaLogin.status);
   }
 
-  await carregarRanking();
+  try {
+    await carregarRanking();
+  } catch (err) {
+    console.warn("Erro ao carregar ranking:", err);
+  }
 }
 
 // ==================================================
@@ -223,8 +220,13 @@ async function login() {
 // Descrição: Envia histórico de palpites para o servidor (ranking e modo fácil)
 // ==================================================
 async function salvarHistorico(nomeDoJogador, palpites) {
+  if (!nomeDoJogador || !Array.isArray(palpites)) {
+    console.warn("Dados inválidos para salvar histórico");
+    return;
+  }
+
   try {
-    await fetch(`${API_URL}/api/salvar-historico`, {
+    const resposta = await fetch(`${API_URL}/api/salvar-historico`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -232,7 +234,16 @@ async function salvarHistorico(nomeDoJogador, palpites) {
         historico: palpites,
       }),
     });
-  } catch (err) {}
+
+    if (!resposta.ok) {
+      const erro = await resposta.text();
+      console.warn("Erro ao salvar histórico:", erro);
+    } else {
+      console.log("📚 Histórico salvo com sucesso para", nomeDoJogador);
+    }
+  } catch (err) {
+    console.error("🚫 Falha na comunicação com o servidor:", err);
+  }
 }
 
 // ==================================================
@@ -240,24 +251,35 @@ async function salvarHistorico(nomeDoJogador, palpites) {
 // Descrição: Executa ao carregar a página e exibe a tela correta com base no localStorage
 // ==================================================
 window.addEventListener("DOMContentLoaded", async () => {
-  if (telaEmTransicao) return;
+  if (typeof telaEmTransicao !== "undefined" && telaEmTransicao) return;
+
   atualizarBotao();
 
   const estado = localStorage.getItem("estadoTela");
   const nome = localStorage.getItem("nomeJogador");
 
-  if (estado === "jogo" && nome) {
+  if (nome) {
     document.getElementById("nome").value = nome;
-    await login();
-    document.getElementById("welcomeArea").style.display = "none";
-    document.getElementById("gameArea").style.display = "block";
-    iniciarNivel();
-  } else if (estado === "boasVindas" && nome) {
-    document.getElementById("nome").value = nome;
-    document.querySelector(".formulario").style.display = "none";
-    document.getElementById("welcomeArea").style.display = "block";
-  } else {
-    // Estado inicial
+  }
+
+  try {
+    if (estado === "jogo" && nome) {
+      await login();
+      document.getElementById("welcomeArea").style.display = "none";
+      document.getElementById("gameArea").style.display = "block";
+      iniciarNivel();
+    } else if (estado === "boasVindas" && nome) {
+      document.querySelector(".formulario").style.display = "none";
+      document.getElementById("welcomeArea").style.display = "block";
+    } else {
+      // Estado inicial
+      document.querySelector(".formulario").style.display = "block";
+      document.getElementById("welcomeArea").style.display = "none";
+      document.getElementById("gameArea").style.display = "none";
+    }
+  } catch (err) {
+    console.error("🚫 Erro ao restaurar estado da tela:", err);
+    // fallback para estado inicial
     document.querySelector(".formulario").style.display = "block";
     document.getElementById("welcomeArea").style.display = "none";
     document.getElementById("gameArea").style.display = "none";
@@ -269,21 +291,31 @@ window.addEventListener("DOMContentLoaded", async () => {
 // Descrição: Inicia o jogo após o jogador escolher o modo e preencher o nome
 // ==================================================
 function entrarNoJogo() {
-  const nome = document.getElementById("nome").value.trim();
-  if (!nome) return alert("Digite seu nome!");
+  const nomeInput = document.getElementById("nome");
+  const nome = nomeInput?.value.trim();
+
+  if (!nome || nome.length < 3) {
+    alert("Digite um nome válido com pelo menos 3 caracteres!");
+    return;
+  }
 
   // Salva estado e modo de jogo
   localStorage.setItem("estadoTela", "jogo");
   localStorage.setItem("nomeJogador", nome);
 
-  const modoSelecionado = document.querySelector('input[name="modo"]:checked').value;
+  const modoSelecionado = document.querySelector('input[name="modo"]:checked')?.value;
+  if (!modoSelecionado) {
+    alert("Selecione um modo de jogo!");
+    return;
+  }
+
   localStorage.setItem("modoJogo", modoSelecionado);
   historicalShow = modoSelecionado === "facil";
 
   // Exibe tela do jogo e oculta as demais
-  document.querySelector(".formulario").style.display = "none";
-  document.getElementById("welcomeArea").style.display = "none";
-  document.getElementById("gameArea").style.display = "block";
+  document.querySelector(".formulario")?.style.setProperty("display", "none");
+  document.getElementById("welcomeArea")?.style.setProperty("display", "none");
+  document.getElementById("gameArea")?.style.setProperty("display", "block");
 
   // Sincroniza avatar e nome
   const avatarUrl = localStorage.getItem("avatarJogador");
@@ -299,9 +331,14 @@ function entrarNoJogo() {
   }
 
   // Inicia lógica do jogo
-  iniciarNivel();
-  atualizarVidas();
-  carregarRanking();
+  try {
+    iniciarNivel();
+    atualizarVidas();
+    carregarRanking();
+  } catch (err) {
+    console.error("🚫 Erro ao iniciar o jogo:", err);
+    alert("Ocorreu um erro ao iniciar o jogo. Tente novamente.");
+  }
 }
 
 // ==================================================
@@ -309,43 +346,74 @@ function entrarNoJogo() {
 // Descrição: Retorna à tela de cadastro e limpa dados visuais
 // ==================================================
 function sairDoJogo() {
-  localStorage.setItem("estadoTela", "formulario"); // ✅ atualiza estado
+  // Atualiza estado da tela para voltar ao formulário
+  localStorage.setItem("estadoTela", "formulario");
 
-  document.getElementById("vidasContainer").textContent = "";
-  document.getElementById("gameArea").style.display = "none";
-  document.getElementById("welcomeArea").style.display = "none";
-  document.querySelector(".formulario").style.display = "block";
+  // Oculta áreas do jogo e boas-vindas
+  document.getElementById("gameArea")?.style.setProperty("display", "none");
+  document.getElementById("welcomeArea")?.style.setProperty("display", "none");
+
+  // Exibe formulário de entrada
+  document.querySelector(".formulario")?.style.setProperty("display", "block");
+
+  // Limpa apenas a interface visual (não os dados do jogador)
+  const vidasContainer = document.getElementById("vidasContainer");
+  if (vidasContainer) vidasContainer.textContent = "";
+
+  // NÃO zera currentLevel, lives, histórico ou avatar
+  // Esses dados permanecem salvos no localStorage e backend
+
+  console.log("👋 Jogador saiu do jogo, dados preservados");
 }
 
 // ==================================================
 // EVENTO: DOMContentLoaded
 // Descrição: Executa ao carregar a página e restaura estado salvo
 // ==================================================
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   atualizarBotao();
-  carregarRanking();
 
   const estado = localStorage.getItem("estadoTela");
   const nome = localStorage.getItem("nomeJogador");
   const avatar = localStorage.getItem("avatarJogador");
 
+  // Sempre tenta carregar o ranking, mesmo fora do jogo
+  try {
+    await carregarRanking();
+  } catch (err) {
+    console.warn("⚠️ Erro ao carregar ranking:", err);
+  }
+
   if (estado === "jogo" && nome && avatar) {
-    document.querySelector(".formulario").style.display = "none";
-    document.getElementById("welcomeArea").style.display = "none";
-    document.getElementById("gameArea").style.display = "block";
+    document.querySelector(".formulario")?.style.setProperty("display", "none");
+    document.getElementById("welcomeArea")?.style.setProperty("display", "none");
+    document.getElementById("gameArea")?.style.setProperty("display", "block");
 
     const avatarJogo = document.getElementById("avatarJogo");
-    avatarJogo.src = avatar;
-    avatarJogo.style.display = "block";
+    if (avatarJogo) {
+      avatarJogo.src = avatar;
+      avatarJogo.style.display = "block";
+    }
 
     const nomeJogador = document.getElementById("nomeJogador");
-    nomeJogador.textContent = `👤 Jogador: ${nome}`;
+    if (nomeJogador) {
+      nomeJogador.textContent = `👤 Jogador: ${nome}`;
+    }
 
-    iniciarNivel();
-    atualizarVidas();
-    carregarRanking();
+    try {
+      await login(); // garante que dados do backend estejam atualizados
+      iniciarNivel();
+      atualizarVidas();
+    } catch (err) {
+      console.error("🚫 Erro ao restaurar sessão do jogador:", err);
+      alert("Ocorreu um erro ao restaurar seu jogo. Tente novamente.");
+      localStorage.setItem("estadoTela", "formulario");
+      document.querySelector(".formulario")?.style.setProperty("display", "block");
+      document.getElementById("gameArea")?.style.setProperty("display", "none");
+    }
   }
 });
+
 
 // ==================================================
 // FUNÇÃO: carregarRanking
@@ -354,63 +422,73 @@ window.addEventListener("DOMContentLoaded", () => {
 async function carregarRanking() {
   try {
     const resposta = await fetch(`${API_URL}/api/ranking`);
+    if (!resposta.ok) throw new Error("Resposta inválida do servidor");
+
     const ranking = await resposta.json();
-
     const nomeAtual = localStorage.getItem("nomeJogador");
-    const trofeus = ["🥇", "🥈", "🥉"]; // Troféus para os 3 primeiros
-    const simbolosExtras = ["🎖️", "🎗️", "⭐", "🌟", "🔰", "🪐", "🚀"];
 
+    const trofeus = ["🥇", "🥈", "🥉"];
+    const simbolosExtras = ["🎖️", "🎗️", "⭐", "🌟", "🔰", "🪐", "🚀"];
 
     // Atualiza Top 3
     const topRanking = document.getElementById("topRanking");
-    topRanking.innerHTML = "";
-    ranking.slice(0, 3).forEach((jogador, index) => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-      <div class="miniRanking">
-       <p class="trofeu">${trofeus[index]}</p>
-        <div class="avatarMiniRanking">
-        <img src="${jogador.avatar}" alt="Avatar de ${jogador.id}">
-        </div>
-         ${jogador.id} - Nível Máximo ${jogador.nivelMaximo}
-         </div>
-      `;
-      topRanking.appendChild(li);
-    });
+    if (topRanking) {
+      topRanking.innerHTML = "";
+      ranking.slice(0, 3).forEach((jogador, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div class="miniRanking">
+            <p class="trofeu">${trofeus[index]}</p>
+            <div class="avatarMiniRanking">
+              <img src="${jogador.avatar}" alt="Avatar de ${jogador.id}">
+            </div>
+            ${jogador.id} - Nível Máximo ${jogador.nivelMaximo}
+          </div>
+        `;
+        topRanking.appendChild(li);
+      });
+    }
 
     // Atualiza ranking completo
     const listaCompleta = document.getElementById("listaRankingCompleto");
-    listaCompleta.innerHTML = "";
-    ranking.forEach((jogador, index) => {
-      const li = document.createElement("li");
+    if (listaCompleta) {
+      listaCompleta.innerHTML = "";
+      ranking.forEach((jogador, index) => {
+        const li = document.createElement("li");
 
-      if (jogador.id === nomeAtual) {
-        li.style.backgroundColor = "#ff0000";
-        li.style.fontWeight = "bold";
-        li.style.color = "white"
-        li.style.borderRadius = "50px"
-        li.style.border = "2px solid black"
-      }
+        if (jogador.id === nomeAtual) {
+          Object.assign(li.style, {
+            backgroundColor: "#ff0000",
+            fontWeight: "bold",
+            color: "white",
+            borderRadius: "50px",
+            border: "2px solid black"
+          });
+        }
 
-      const simbolo = index < 3 
-  ? trofeus[index] 
-  : index < 10 
-    ? simbolosExtras[index - 3] 
-    : "";
+        const simbolo =
+          index < 3 ? trofeus[index] :
+          index < 10 ? simbolosExtras[index - 3] :
+          "";
 
-      li.innerHTML = `
-      <div class="RankingGeal">
-        <p class="simbolos">${simbolo}</p>
-        <div class="avatarRankingGeral">
-        <img src="${jogador.avatar}" alt="Avatar de ${jogador.id}">
-        </div>
-         ${jogador.id} - Nível Máximo ${jogador.nivelMaximo}
-         </div>
-      `;
-      listaCompleta.appendChild(li);
-    });
+        li.innerHTML = `
+          <div class="RankingGeal">
+            <p class="simbolos">${simbolo}</p>
+            <div class="avatarRankingGeral">
+              <img src="${jogador.avatar}" alt="Avatar de ${jogador.id}">
+            </div>
+            ${jogador.id} - Nível Máximo ${jogador.nivelMaximo}
+          </div>
+        `;
+        listaCompleta.appendChild(li);
+      });
+    }
   } catch (err) {
-    console.error("Erro ao carregar ranking:", err);
+    console.error("🚫 Erro ao carregar ranking:", err);
+    const listaCompleta = document.getElementById("listaRankingCompleto");
+    if (listaCompleta) {
+      listaCompleta.innerHTML = "<li>⚠️ Não foi possível carregar o ranking.</li>";
+    }
   }
 }
 
@@ -420,6 +498,8 @@ async function carregarRanking() {
 // ==================================================
 function mostrarRankingCompleto() {
   const ranking = document.getElementById("rankingCompleto");
+  if (!ranking) return;
+
   ranking.classList.remove("fade-out");
   ranking.classList.add("fade-in");
   ranking.style.display = "block";
@@ -427,9 +507,17 @@ function mostrarRankingCompleto() {
 
 function fecharRanking() {
   const ranking = document.getElementById("rankingCompleto");
+  if (!ranking) return;
+
   ranking.classList.remove("fade-in");
   ranking.classList.add("fade-out");
+
+  // Aguarda o fim da animação para esconder o elemento
+  setTimeout(() => {
+    ranking.style.display = "none";
+  }, 300); // tempo deve bater com a duração da animação CSS
 }
+
 
 // ==================================================
 // FUNÇÃO: atualizarVidas
@@ -443,12 +531,12 @@ function atualizarVidas() {
   const coracaoVazio = "🤍";
   const totalVidas = 3;
 
-  let coracoes = "";
-  for (let i = 0; i < totalVidas; i++) {
-    coracoes += i < lives ? coracaoCheio : coracaoVazio;
-  }
+  const vidasAtuais = typeof lives === "number" ? lives : 0;
+  const coracoes = Array.from({ length: totalVidas }, (_, i) =>
+    i < vidasAtuais ? coracaoCheio : coracaoVazio
+  ).join("");
 
-  container.textContent = `${coracoes}`;
+  container.textContent = coracoes;
 }
 
 // ==================================================
@@ -456,8 +544,8 @@ function atualizarVidas() {
 // Descrição: Reinicia o jogo após Game Over e reseta estado
 // ==================================================
 async function reiniciarJogo() {
-  pararGameOverLoop();
-  pararCoroaLoop();
+  pararGameOverLoop?.();
+  pararCoroaLoop?.();
 
   currentLevel = 1;
   lives = 3;
@@ -466,16 +554,30 @@ async function reiniciarJogo() {
   atualizarVidas();
   iniciarNivel();
 
-  document.getElementById("palpite").disabled = false;
-  document.getElementById("enviarPalpite").disabled = false;
+  document.getElementById("palpite")?.removeAttribute("disabled");
+  document.getElementById("enviarPalpite")?.removeAttribute("disabled");
 
   const nomeJogador = localStorage.getItem("nomeJogador");
+  if (!nomeJogador) {
+    console.warn("⚠️ Nome do jogador não encontrado no localStorage");
+    return;
+  }
 
-  await fetch(`${API_URL}/api/reiniciar-nivel`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: nomeJogador }),
-  });
+  try {
+    const resposta = await fetch(`${API_URL}/api/reiniciar-nivel`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: nomeJogador }),
+    });
+
+    if (!resposta.ok) {
+      const erro = await resposta.text();
+      console.error("🚫 Erro ao reiniciar nível:", erro);
+    }
+  } catch (err) {
+    console.error("🚫 Falha na comunicação com o servidor:", err);
+  }
+
   transicaoDeTela("gameOverArea", "gameArea");
 }
 
@@ -485,20 +587,32 @@ async function reiniciarJogo() {
 // ==================================================
 async function continuarJogo() {
   estadoDeTransicao = false;
-
-  pararCoracaoLoop();
+  pararCoracaoLoop?.();
 
   const nomeJogador = localStorage.getItem("nomeJogador");
+  if (!nomeJogador) {
+    console.warn("⚠️ Nome do jogador não encontrado no localStorage");
+    return;
+  }
 
-  await fetch(`${API_URL}/api/atualizar-nivel`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: nomeJogador,
-      nivelAtual: currentLevel,
-      vidas: lives,
-    }),
-  });
+  try {
+    const resposta = await fetch(`${API_URL}/api/atualizar-nivel`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: nomeJogador,
+        nivelAtual: currentLevel,
+        vidas: lives,
+      }),
+    });
+
+    if (!resposta.ok) {
+      const erro = await resposta.text();
+      console.error("🚫 Erro ao atualizar nível:", erro);
+    }
+  } catch (err) {
+    console.error("🚫 Falha na comunicação com o servidor:", err);
+  }
 
   iniciarNivel();
   transicaoDeTela("vidaPerdidaArea", "gameArea");
@@ -519,11 +633,17 @@ function limparInputPalpite() {
 // ==================================================
 async function continuarVitoria() {
   estadoDeTransicao = false;
+  pararConfetesLoop?.();
+  pararTrofeuLoop?.();
 
   const nomeJogador = localStorage.getItem("nomeJogador");
+  if (!nomeJogador) {
+    console.warn("⚠️ Nome do jogador não encontrado no localStorage");
+    return;
+  }
 
   try {
-    await fetch(`${API_URL}/api/atualizar-nivel`, {
+    const resposta = await fetch(`${API_URL}/api/atualizar-nivel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -532,16 +652,23 @@ async function continuarVitoria() {
         vidas: lives,
       }),
     });
-    await carregarRanking();
-  } catch (err) {}
-  pararConfetesLoop();
-  pararTrofeuLoop();
+
+    if (!resposta.ok) {
+      const erro = await resposta.text();
+      console.error("🚫 Erro ao atualizar nível após vitória:", erro);
+    } else {
+      await carregarRanking();
+    }
+  } catch (err) {
+    console.error("🚫 Falha na comunicação com o servidor:", err);
+  }
+
   transicaoDeTela("vitoriaArea", "gameArea");
 
   // Aguarda fim da animação antes de iniciar novo nível
   setTimeout(() => {
     iniciarNivel();
-  }, 1000); 
+  }, 1000);
 }
 
 // ==================================================
@@ -549,12 +676,26 @@ async function continuarVitoria() {
 // Descrição: Controlam transição entre tela de jogo e ranking
 // ==================================================
 function mostrarRankingCompleto() {
-  transicaoDeTela("gameArea", "rankingArea");
+  const rankingArea = document.getElementById("rankingArea");
+  const gameArea = document.getElementById("gameArea");
+
+  if (rankingArea && gameArea) {
+    transicaoDeTela("gameArea", "rankingArea");
+  } else {
+    console.warn("⚠️ Áreas de ranking ou jogo não encontradas.");
+  }
 }
 
 function voltarDoRanking() {
-  localStorage.setItem("estadoTela", "jogo");
-  transicaoDeTela("rankingArea", "gameArea");
+  const rankingArea = document.getElementById("rankingArea");
+  const gameArea = document.getElementById("gameArea");
+
+  if (rankingArea && gameArea) {
+    localStorage.setItem("estadoTela", "jogo");
+    transicaoDeTela("rankingArea", "gameArea");
+  } else {
+    console.warn("⚠️ Áreas de ranking ou jogo não encontradas.");
+  }
 }
 
 // ==================================================
@@ -696,8 +837,12 @@ function pararCoroaLoop() {
 // ==================================================
 function mostrarTelaMotivacional() {
   const nomeJogador = localStorage.getItem("nomeJogador") || "Jogador";
-  document.getElementById("nomeFinal").textContent = nomeJogador;
-  document.getElementById("nomeFinal2").textContent = nomeJogador;
+
+  const nomeFinal = document.getElementById("nomeFinal");
+  const nomeFinal2 = document.getElementById("nomeFinal2");
+
+  if (nomeFinal) nomeFinal.textContent = nomeJogador;
+  if (nomeFinal2) nomeFinal2.textContent = nomeJogador;
 
   transicaoDeTela("vitoriaFinalArea", "telaMotivacional");
 }
@@ -791,14 +936,21 @@ const gameOver = [
 // Descrição: Inicia o jogo e exibe avatar gerado
 // ==================================================
 function iniciarJogo() {
-  nome = document.getElementById("nome").value.trim();
-  if (!nome) return alert("Digite seu nome!");
+  const nomeInput = document.getElementById("nome");
+  const nome = nomeInput?.value.trim();
 
-  document.getElementById(
-    "avatar"
-  ).src = `https://api.dicebear.com/7.x/bottts/svg?seed=${nome}`;
-  document.getElementById("avatar").style.display = "block";
+  if (!nome || nome.length < 3) {
+    alert("Digite um nome válido com pelo menos 3 caracteres!");
+    return;
+  }
 
+  const avatar = document.getElementById("avatar");
+  if (avatar) {
+    avatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(nome)}`;
+    avatar.style.display = "block";
+  }
+
+  localStorage.setItem("nomeJogador", nome); // salva para uso posterior
   iniciarNivel();
 }
 
@@ -809,6 +961,7 @@ function iniciarJogo() {
 function iniciarNivel() {
   const min = 1;
   const max = multipliedByLevel(currentLevel);
+
   number = getNumberRandon(min, max);
   attempts = Math.ceil(Math.log2(max - min + 1));
   numberOfGuesses = 0;
@@ -816,18 +969,18 @@ function iniciarNivel() {
 
   const nivelInfo = document.getElementById("nivelInfo");
   if (nivelInfo) {
-    nivelInfo.innerHTML = `🧠 Nível ${currentLevel} — Adivinhe entre ${min} e ${max}.<br> Você tem ${attempts} tentativas.`;
+    nivelInfo.innerHTML = `
+      🧠 Nível ${currentLevel} — Adivinhe entre ${min} e ${max}.<br>
+      Você tem ${attempts} tentativas.
+    `;
   }
 
   const mensagemJogo = document.getElementById("mensagemJogo");
-  if (mensagemJogo) {
-    mensagemJogo.innerHTML = "";
-  }
+  if (mensagemJogo) mensagemJogo.textContent = "";
 
   const historico = document.getElementById("historico");
-  if (historico) {
-    historico.innerHTML = "";
-  }
+  if (historico) historico.textContent = "";
+
   atualizarVidas();
 }
 
@@ -995,27 +1148,26 @@ function randomPhrase(array) {
 
 // Gera frase de incentivo com base nas tentativas restantes
 function tentativePhraseGenerator(remainingAttempts) {
-  let selectedPhrases =
+  const selectedPhrases =
     remainingAttempts >= 5
       ? attemptPhrases5
       : remainingAttempts >= 2
       ? attemptPhrases3
       : attemptPhrases1;
 
-  return selectedPhrases[
-    Math.floor(Math.random() * selectedPhrases.length)
-  ].replace("{X}", remainingAttempts);
+  return randomPhrase(selectedPhrases).replace("{X}", remainingAttempts);
 }
 
 // ==================================================
 // EVENTO: Enter no input de palpite
-// Descrição: Permite enviar palpite pressionando Enter
 // ==================================================
-document.getElementById("palpite")
-  .addEventListener("keydown", function (event) {
+const inputPalpite = document.getElementById("palpite");
+if (inputPalpite) {
+  inputPalpite.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-      event.preventDefault(); 
-      jogar(); 
+      event.preventDefault();
+      jogar();
     }
   });
+}
 

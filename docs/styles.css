@@ -1192,3 +1192,36 @@ input[type=number]::-webkit-inner-spin-button,
   50% { transform: scale(1.2); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* Animação para aparecer */
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Animação para desaparecer */
+.fade-out {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
