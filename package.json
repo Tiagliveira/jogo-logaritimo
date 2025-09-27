@@ -1,7 +1,10 @@
-{ 
-  "name": "jogo-logaritimo-api",
+{
+  "name": "jogo-logaritimo",
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
-    "mongoose": "^7.0.0" }
+    "express": "^4.21.2",
+    "mongoose": "^7.0.0",
+    "serverless-http": "^3.2.0"
   }
+}
