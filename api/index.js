@@ -3,8 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
-
-const User = require("./mongo"); // seu schema
+const User = require("./mongo");
 
 const app = express();
 
@@ -14,25 +13,24 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 });
 
-// 🌐 CORS
-app.use(cors({
-  origin: "https://tiagliveira.github.io",
-  methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"]
-}));
+// 🌐 CORS manual para Vercel
+const allowCORS = (req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://tiagliveira.github.io");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+};
 
 app.use(express.json());
 app.use("/assets", express.static(path.join(__dirname, "../assets")));
+app.use(allowCORS);
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://tiagliveira.github.io");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
+// 🔧 Trata requisições OPTIONS (pré-flight)
+app.options("*", allowCORS, (req, res) => {
+  res.status(200).end();
 });
 
-
-// 📌 ROTA DE RANKING (agora integrada)
+// 📌 ROTA DE RANKING
 app.get("/api/ranking", async (req, res) => {
   try {
     const ranking = await User.find({}, "id nivelMaximo avatar")
@@ -43,7 +41,6 @@ app.get("/api/ranking", async (req, res) => {
     res.status(500).send("Erro ao buscar ranking");
   }
 });
-
 
 // 📌 Cadastro de novo jogador
 app.post("/cadastro", async (req, res) => {
