@@ -1,15 +1,9 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "api/ranking.js",
-      "use": "@vercel/node"
-    }
+    { "src": "api/ranking.js", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/api/ranking",
-      "dest": "api/ranking.js"
-    }
+    { "src": "/api/ranking", "dest": "api/ranking.js" }
   ]
 }
