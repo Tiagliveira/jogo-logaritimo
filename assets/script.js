@@ -4,7 +4,7 @@
  * Descrição: Script principal do jogo — controle de telas, cadastro, login, histórico e animações
  * Última atualização: 25/09/2025
  */
-const API_URL = "http://localhost:3000";
+const API_URL = "https://jogo-logaritimo.onrender.com";
 
 // ===============================
 // Variáveis globais do jogo
