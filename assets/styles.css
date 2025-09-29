@@ -17,13 +17,13 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-image: url("assets/img_futurista_pc.png"); /* padrão desktop */
+  background-image: url("img_futurista_pc.png"); /* padrão desktop */
 
 }
 
 @media (max-width: 600px) {
   .background-image {
-     background-image: url("assets/Img_furista_cell.png");/* Para celular */
+     background-image: url("Img_furista_cell.png");/* Para celular */
      height: 90dvh;
      width: 80%;
 
