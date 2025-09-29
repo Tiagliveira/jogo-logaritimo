@@ -107,6 +107,23 @@ app.post("/atualizar-ranking", (req, res) => {
   });
 });
 
+// 📌 ranking
+app.get("/ranking", (req, res) => {
+  const sqlite3 = require("sqlite3").verbose();
+  const db = new sqlite3.Database("jogo.db");
+
+  db.all("SELECT nome, pontuacao FROM jogadores ORDER BY pontuacao DESC LIMIT 3", (err, rows) => {
+    if (err) {
+      console.error("Erro ao buscar ranking:", err);
+      res.status(500).json({ erro: "Erro ao buscar ranking" });
+    } else {
+      res.json(rows);
+    }
+  });
+
+  db.close();
+});
+
 // 📌 Atualizar nível
 app.post("/atualizar-nivel", (req, res) => {
   const { id, nivelAtual, vidas } = req.body;
