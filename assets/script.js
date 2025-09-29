@@ -4,9 +4,8 @@
  * Descrição: Script principal do jogo — controle de telas, cadastro, login, histórico e animações
  * Última atualização: 25/09/2025
  */
-const API_URL = location.hostname === "localhost"
-  ? "http://localhost:3000"
-  : "https://jogo-logaritimo-api-8mj1.vercel.app";
+const API_URL = "http://localhost:3000";
+
 // ===============================
 // Variáveis globais do jogo
 // ===============================
@@ -89,7 +88,7 @@ async function cadastrar() {
 
   let respostaCadastro;
   try {
-    respostaCadastro = await fetch(`${API_URL}/api/cadastro`, {
+    respostaCadastro = await fetch(`${API_URL}/cadastro`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: nome, avatar: avatarUrl }),
@@ -166,7 +165,7 @@ async function login() {
 
   let respostaLogin;
   try {
-    respostaLogin = await fetch(`${API_URL}/api/login`, {
+    respostaLogin = await fetch(`${API_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: nome }),
@@ -233,7 +232,7 @@ async function salvarHistorico(nomeDoJogador, palpites) {
   }
 
   try {
-    const resposta = await fetch(`${API_URL}/api/salvar-historico`, {
+    const resposta = await fetch(`${API_URL}/salvar-historico`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -428,7 +427,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 // ==================================================
 async function carregarRanking() {
   try {
-    const resposta = await fetch(`${API_URL}/api/ranking`);
+    const resposta = await fetch(`${API_URL}/ranking`);
     if (!resposta.ok) throw new Error("Resposta inválida do servidor");
 
     const ranking = await resposta.json();
@@ -571,7 +570,7 @@ async function reiniciarJogo() {
   }
 
   try {
-    const resposta = await fetch(`${API_URL}/api/reiniciar-nivel`, {
+    const resposta = await fetch(`${API_URL}/reiniciar-nivel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: nomeJogador }),
@@ -603,7 +602,7 @@ async function continuarJogo() {
   }
 
   try {
-    const resposta = await fetch(`${API_URL}/api/atualizar-nivel`, {
+    const resposta = await fetch(`${API_URL}/atualizar-nivel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -650,7 +649,7 @@ async function continuarVitoria() {
   }
 
   try {
-    const resposta = await fetch(`${API_URL}/api/atualizar-nivel`, {
+    const resposta = await fetch(`${API_URL}/atualizar-nivel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -1036,7 +1035,7 @@ async function jogar() {
   currentLevel++;
 
   try {
-    await fetch(`${API_URL}/api/atualizar-nivel`, {
+    await fetch(`${API_URL}/atualizar-nivel`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

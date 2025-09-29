@@ -3,8 +3,29 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
     "express": "^4.21.2",
-    "mongoose": "^7.0.0",
-    "serverless-http": "^3.2.0"
-  }
+    "serverless-http": "^3.2.0",
+    "sqlite3": "^5.1.7"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tiagliveira/jogo-logaritimo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tiagliveira/jogo-logaritimo/issues"
+  },
+  "homepage": "https://github.com/Tiagliveira/jogo-logaritimo#readme",
+  "description": ""
 }
