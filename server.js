@@ -109,19 +109,16 @@ app.post("/atualizar-ranking", (req, res) => {
 
 // 📌 ranking
 app.get("/ranking", (req, res) => {
-  const sqlite3 = require("sqlite3").verbose();
-  const db = new sqlite3.Database("jogo.db");
-
-  db.all("SELECT nome, pontuacao FROM jogadores ORDER BY pontuacao DESC LIMIT 3", (err, rows) => {
-    if (err) {
-      console.error("Erro ao buscar ranking:", err);
-      res.status(500).json({ erro: "Erro ao buscar ranking" });
-    } else {
+  db.all(
+    `SELECT id, avatar, nivelMaximo FROM jogadores ORDER BY nivelMaximo DESC LIMIT 10`,
+    (err, rows) => {
+      if (err) {
+        console.error("Erro ao buscar ranking:", err);
+        return res.status(500).json({ erro: "Erro ao buscar ranking" });
+      }
       res.json(rows);
     }
-  });
-
-  db.close();
+  );
 });
 
 // 📌 Atualizar nível
