@@ -1,4 +1,5 @@
 const sqlite3 = require("sqlite3").verbose();
+const dbPath = path.resolve(__dirname, "jogo.db");
 const db = new sqlite3.Database("./jogo.db");
 
 // Criação da tabela
