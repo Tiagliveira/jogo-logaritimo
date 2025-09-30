@@ -1,5 +1,5 @@
 # 🎮 Jogo Backend – API com Node.js, Express e SQLite
-<img src="imagemReadme" alt="Logo do Jogo" width="300px" />
+<img src="aasets/imagemReadme" alt="Logo do Jogo" width="300px" />
 
 Este é o backend de um jogo desenvolvido como projeto de estudo, utilizando Node.js com Express e banco de dados SQLite. A aplicação está hospedada na plataforma Render e oferece funcionalidades completas de cadastro, login, ranking e histórico de jogadores.
 
