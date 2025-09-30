@@ -1,5 +1,5 @@
 # 🎮 Jogo logaritimo – API com Node.js, Express e SQLite
-<img src="jogo-logaritimo/ativos/imagemReadme.PNG" alt="Logo do Jogo" width="300px" margin="auto" />
+<img src="src/assets/imagemReadme.PNG" alt="Logo do Jogo" width="300px" margin="auto" />
 
 Este é o backend de um jogo desenvolvido como projeto de estudo, utilizando Node.js com Express e banco de dados SQLite. A aplicação está hospedada na plataforma Render e oferece funcionalidades completas de cadastro, login, ranking e histórico de jogadores.
 
