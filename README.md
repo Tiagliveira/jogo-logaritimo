@@ -6,7 +6,7 @@ Este é o backend de um jogo desenvolvido como projeto de estudo, utilizando Nod
 
 ---
 
-## 🚀 Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Node.js + Express** – Servidor leve e eficiente
 - **SQLite3** – Banco de dados local e persistente
@@ -16,7 +16,7 @@ Este é o backend de um jogo desenvolvido como projeto de estudo, utilizando Nod
 
 ---
 
-## 📦 Funcionalidades da API
+## Funcionalidades da API
 
 | Rota                  | Método | Descrição                                                                 |
 |-----------------------|--------|---------------------------------------------------------------------------|
@@ -31,7 +31,7 @@ Este é o backend de um jogo desenvolvido como projeto de estudo, utilizando Nod
 
 ---
 
-## 🌐 Links do Projeto
+## Links do Projeto
 
-🔗 [Acesse o jogo online aqui](https://jogo-logaritimo.onrender.com/)
-📂 [Veja o código fonte no GitHub](https://github.com/Tiagliveira/jogo-logaritimo)
+ [Acesse o jogo online aqui](https://jogo-logaritimo.onrender.com/)
+ [Veja o código fonte no GitHub](https://github.com/Tiagliveira/jogo-logaritimo)
