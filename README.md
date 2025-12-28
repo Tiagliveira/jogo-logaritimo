@@ -21,7 +21,7 @@ Diferente de jogos de adivinhação baseados em sorte pura, este jogo educa o us
 
 ---
 
-## ⚙️ Regras de Negócio e Mecânicas de Jogo
+## Regras de Negócio e Mecânicas de Jogo
 
 Implementei um sistema robusto de gerenciamento de estado para controlar a progressão do usuário:
 
